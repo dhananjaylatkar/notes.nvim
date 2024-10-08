@@ -15,7 +15,8 @@ Using [lazy.nvim](https://github.com/folke/lazy.nvim)
 
   "dhananjaylatkar/notes.nvim",
   dependencies = {
-    "nvim-telescope/telescope.nvim"
+    "nvim-telescope/telescope.nvim", -- for picker="telescope"
+    "echasnovski/mini.pick", -- for picker="mini-pick"
   },
   opts = {
     -- USE EMPTY FOR DEFAULT OPTIONS
@@ -34,6 +35,8 @@ _notes.nvim_ comes with following defaults:
 {
   -- notes root dir
   root = os.getenv("HOME") .. "/code/notes/",
+  -- picker
+  picker = "telescope", -- "telescope" or "mini-pick"
 }
 ```
 

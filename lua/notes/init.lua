@@ -1,16 +1,41 @@
-local tb = require("telescope.builtin")
 local fu = require("notes.file_util")
 
 local M = {}
 
 M.opts = {
   root = os.getenv("HOME") .. "/code/notes/",
+  picker = "telescope", -- "telescope" or "mini-pick"
 }
+
+local _picker = {}
+
+local assign_picker = function()
+  if M.opts.picker == "telescope" then
+    _picker.find_files = function()
+      require("telescope.builtin").find_files({ cwd = M.opts.root })
+    end
+
+    _picker.grep = function()
+      require("telescope.builtin").live_grep({ cwd = M.opts.root })
+    end
+  elseif M.opts.picker == "mini-pick" then
+    _picker.find_files = function()
+      MiniPick.builtin.files({}, { source = { name = "Notes", cwd = M.opts.root } })
+    end
+
+    _picker.grep = function()
+      MiniPick.builtin.grep_live({}, { source = { cwd = M.opts.root } })
+    end
+  else
+    print("Unsupported picker is provided")
+  end
+end
 
 M.setup = function(opts)
   opts = opts or {}
   M.opts = vim.tbl_deep_extend("force", M.opts, opts)
   fu.create_folder(M.opts.root)
+  assign_picker()
   M.create_cmds()
 end
 
@@ -22,11 +47,11 @@ M.create_cmds = function()
 end
 
 M.find = function()
-  tb.find_files({ cwd = M.opts.root })
+  _picker.find_files()
 end
 
 M.grep = function()
-  tb.live_grep({ cwd = M.opts.root })
+  _picker.grep()
 end
 
 M.create = function()
