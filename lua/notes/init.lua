@@ -20,11 +20,11 @@ local assign_picker = function()
     end
   elseif M.opts.picker == "mini-pick" then
     _picker.find_files = function()
-      MiniPick.builtin.files({}, { source = { name = "Notes", cwd = M.opts.root } })
+      MiniPick.builtin.files({}, { source = { name = "Notes (find)", cwd = M.opts.root } })
     end
 
     _picker.grep = function()
-      MiniPick.builtin.grep_live({}, { source = { cwd = M.opts.root } })
+      MiniPick.builtin.grep_live({}, { source = { name = "Notes (grep)", cwd = M.opts.root } })
     end
   else
     print("Unsupported picker is provided")
